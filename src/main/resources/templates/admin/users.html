@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <div th:replace="default :: styless"></div>
+    <title th:text="${title}"></title>
+
+
+</head>
+<body>
+<header th:replace="default :: header"></header>
+
+<div class="container" style="margin-top: 20px">
+    <div class="row">
+        <h1>Lista korisnika</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Korisničko ime</th>
+                <th scope="col">Email adresa</th>
+                <th scope="col">Broj godina</th>
+                <th scope="col">Šifra</th>
+                <th scope="col">Izmeni</th>
+                <th scope="col">Obriši</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user :${users}">
+                <th scope="row" th:text="${user.getId()}">1</th>
+                <td th:text="${user.getUsername()}">Mark</td>
+                <td th:text="${user.getEmail()}">Mark</td>
+                <td th:text="${user.getAge()}">Mark</td>
+                <td th:text="${user.getPassword()}">Otto</td>
+                <td><a href="#" th:href="@{'/user/'+${user.id}+'/edit'}">Izmeni</a></td>
+                <td><a href="#" th:href="@{'/user/'+${user.id}+'/delete'}">Obriši</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+<div th:replace="default :: scripts"></div>
+</body>
+</html>

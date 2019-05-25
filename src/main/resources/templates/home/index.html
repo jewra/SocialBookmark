@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="default :: styless"></div>
+    <title></title>
+</head>
+<body>
+<header th:replace="default :: header"></header>
+<main role="main">
+
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">Bookmarks</h1>
+            <p class="lead text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                velit esse cillum dolore eu fugiat nulla pariatur. </p>
+            <p>
+                <a href="#" th:href="@{'/bookmark/'}" class="btn btn-dark my-2">Dodaj nov bookmark</a>
+                <a href="#" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{'/admin/index'}" class="btn btn-secondary my-2">Admin
+                    panel</a>
+            </p>
+            <p>
+            <h3>Kategorije</h3>
+            <span th:if="${userCategories==null}">
+                <a th:each=" kategorija: ${categories}" th:href="@{'/home/'+${kategorija.name}+'/category'}" href="#"
+                   th:text="${kategorija.name}" class="btn btn-dark my-2" style="margin-right: 10px;"> </a>
+                    </span>
+
+            <span th:if="${userCategories!=null}">
+                <a th:each=" kategorija: ${userCategories}"
+                   th:href="@{'/home/'+${username}+'/bookmarks/'+${kategorija.name}}" href="#"
+                   th:text="${kategorija.name}" class="btn btn-dark my-2" style="margin-right: 10px;"> </a>
+                    </span>
+            <br/>
+            <span th:if="${showNewCategory}">
+            <a href="#" th:href="@{'/category'}" class="btn btn-dark my-2">Dodaj novu kategoriju</a>
+            </span>
+            </p>
+        </div>
+    </section>
+
+    <div class=" bg-light">
+        <div class="container">
+            <div class="row row-eq-height">
+                <div class="col-md-4" th:each="bookmark :${bookmarks}">
+                    <div class="card mb-4 box-shadow" style="height: 452px;">
+                        <img class="card-img-top rounded" th:src="@{'/bookmark/' + ${bookmark.id} + '/image'}"
+                             th:alt="${bookmark.name}" alt="Bookmark image cap" width="270" height="270">
+                        <div class="card-body">
+                            <p class="card-text" th:text="${bookmark.description}" style="height: 95px;">This is a
+                                wider card with
+                                supporting text below as a natural lead-in to additional content. This content is a
+                                little bit longer.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a th:href="${bookmark.url}" class="btn btn-sm btn-outline-secondary"
+                                       target="_blank">Pogledaj </a>
+                                    <span th:if="${bookmark.getKorisnik().username.equals(#httpServletRequest.remoteUser)}">
+                                    <a class="btn btn-sm btn-outline-secondary" href="#"
+                                       th:href="@{'/bookmark/'+ ${bookmark.id}+'/edit' }">Izmeni
+                                    </a>
+                                    </span>
+                                    <span th:if="${bookmark.getKorisnik().username.equals(#httpServletRequest.remoteUser)}">
+                                        <a class="btn btn-sm btn-outline-secondary" href="#"
+                                        th:href="@{'/bookmark/'+ ${bookmark.id}+'/delete' }">Obriši</a>
+                                    </span>
+                                </div>
+                                <a class="text-muted" th:text="${ 'Postavio ' + bookmark.getKorisnik().username}"
+                                   href="#" th:href="@{'/home/'+ ${bookmark.getKorisnik().username}+'/bookmarks' }"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#">Back to top</a>
+        </p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.</p>
+    </div>
+</footer>
+
+
+<div th:replace="default :: scripts"></div>
+<script src="/js/home.js"></script>
+</body>
+</html>

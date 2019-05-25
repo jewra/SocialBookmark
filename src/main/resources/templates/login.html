@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Bookmark Login Page</title>
+    <div th:replace="default :: styless"></div>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-4 bg-light" style="margin-top: 20px;">
+            <div th:if="${param.error}">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}">
+                You have been logged out.
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+                <h1 class="h3 mb-3 font-weight-normal">Prijava </h1>
+                <input type="text" id="username" class="form-control" placeholder="Korisničko ime" name="username" required autofocus>
+                <input type="password" id="password" class="form-control" placeholder="Šifra" required name="password">
+                <button class="btn btn-lg  btn-block btn-dark" type="submit" style="margin-bottom: 5px;">Potvrda </button>
+
+            </form>
+            <a th:href="@{'/singup'}" href="#" class="">Nemaš nalog?</a>
+            <p class="mt-5 mb-3 text-muted ">&copy; 2017-2018</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

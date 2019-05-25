@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <div th:replace="default :: styless"></div>
+    <title th:text="${title}"></title>
+
+
+</head>
+<body>
+<header th:replace="default :: header"></header>
+
+<div class="container" style="margin-top: 20px">
+        <h1>Admin index stanica</h1>
+        <a th:href="@{'/admin/users'}" href="#">Svi korisnici</a>
+        <br/>
+        <a th:href="@{'/admin/bookmarks'}" href="#">Svi bookmarci</a>
+
+
+</div>
+
+<div th:replace="default :: scripts"></div>
+</body>
+</html>

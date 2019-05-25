@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <div th:replace="default :: styless"></div>
+    <title></title>
+    <link rel="stylesheet" href="/css/singup.css"/>
+
+
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container" >
+        <div class="row">
+            <div class="col-md-3">
+
+
+            </div>
+            <div class="col-md-4 bg-light" style="margin-top: 20px;">
+
+                <form class="form-signin" action="#" th:action="@{/singup}" th:object="${appUser}"  method="post">
+                    <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+                    <h1 class="h3 mb-3 font-weight-normal">Registracija korisnika</h1>
+                    <input type="text" id="inputUsername" class="form-control" placeholder="Korisničko ime" required autofocus th:field="*{username}">
+                    <span class="help-block" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
+                                                        <p>Korisnicko je zauzeto</p>
+                        </span>
+                    <input type="email" id="inputEmail" class="form-control" placeholder="Email addresa" required autofocus th:field="*{email}">
+                    <span class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                                                        <p>Email adresa je zauzeta</p>
+                        </span>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Šifra" required th:field="*{password}">
+                    <input type="number" id="inputAge" class="form-control" placeholder="Broj godina" required th:field="*{age}">
+                    <button class="btn btn-lg  btn-block btn-dark" type="submit">Potvrda</button>
+
+                </form>
+                <a th:href="@{'/login'}" href="#">Već poseduješ nalog?</a>
+                <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+
+
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="default :: scripts"></div>
+<script src="/js/singup.js"></script>
+</body>
+
+</html>

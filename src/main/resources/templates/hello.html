@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <div th:replace="default :: styless"></div>
+    <title></title>
+    <link rel="stylesheet" href="/css/hello.css"/>
+
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Sign Out"/>
+                </form>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="default :: scripts"></div>
+
+</body>
+<th:block layout:fragment="scripts">
+    <script src="/js/hello.js"></script>
+</th:block>
+</html>
