@@ -2,16 +2,19 @@ package vj.development.demo.db;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
+import vj.development.demo.domain.AppUser;
 import vj.development.demo.domain.Bookmark;
 import vj.development.demo.domain.Category;
 import vj.development.demo.domain.Role;
-import vj.development.demo.domain.AppUser;
 import vj.development.demo.repository.BookmarkRepository;
 import vj.development.demo.repository.CategoryRepository;
 import vj.development.demo.repository.RoleRepository;
 import vj.development.demo.repository.UserRepository;
 import vj.development.demo.service.UserService;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,7 +32,7 @@ public class Seed implements CommandLineRunner {
     private final BookmarkRepository bookmarkRepository;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    
+
     public Seed(UserService userService, CategoryRepository categoryRepository, BookmarkRepository bookmarkRepository, RoleRepository roleRepository, UserRepository userRepository) {
         this.userService = userService;
         this.categoryRepository = categoryRepository;
@@ -37,14 +40,15 @@ public class Seed implements CommandLineRunner {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
     }
-    
+
+
     @Override
     public void run(String... args) throws Exception
     {
         databaseSeed();
     }
 
-    public void databaseSeed() {
+    public void databaseSeed() throws FileNotFoundException {
         
         Role roleAdmin = new Role();
         roleAdmin.setType(Role.RoleType.ROLE_ADMIN);
@@ -102,64 +106,72 @@ public class Seed implements CommandLineRunner {
         appUserList.add(appUserStojdza);
         
         
-        appUserList.forEach(u -> userRepository.save(u));
+        appUserList.forEach(userRepository::save);
         
         List<Bookmark> bookmarkList = new ArrayList<>();
         
         Bookmark bookmarkLiveScore = new Bookmark("http://www.livescore.com/", "Live Score", "First live score site on the Internet, powered by LiveScore.com since 1998. Live Soccer from all around the World");
         bookmarkLiveScore.setKorisnik(appUserVlada);
         bookmarkLiveScore.setKategorija(categorySport);
-        
-        Path pathLiveScore = Paths.get("C:/Users/jevremovv/Desktop/bookmark/src/main/resources/static/img/ls.png");
+        File file = ResourceUtils.getFile("classpath:static/img/ls.png");
+
+        Path pathLiveScore = Paths.get(file.getAbsoluteFile().toString());
         try {
             bookmarkLiveScore.setImage(Files.readAllBytes(pathLiveScore));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        bookmarkList.add(bookmarkLiveScore);
+
         Bookmark bookmarkSportBible = new Bookmark("http://www.sportbible.com/", "Sport Bible", "Sport Bible is one of the largest communities for sports fans across the world. With the latest sports new, pictures and videos!");
         bookmarkSportBible.setKorisnik(appUserVlada);
         bookmarkSportBible.setKategorija(categorySport);
-        
-        Path pathSportBible = Paths.get("C:/Users/jevremovv/Desktop/bookmark/src/main/resources/static/img/sp.jpg");
+
+        File file1 = ResourceUtils.getFile("classpath:static/img/sp.jpg");
+
+        Path pathSportBible = Paths.get(file1.getAbsoluteFile().toString());
+
         try {
             bookmarkSportBible.setImage(Files.readAllBytes(pathSportBible));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        bookmarkList.add(bookmarkSportBible);
+
         Bookmark bookmarkMozzart = new Bookmark("https://www.mozzartbet.com/", "Mozzart Bet", "https://www.mozzartbet.com/");
         bookmarkMozzart.setKorisnik(appUserVlada);
         bookmarkMozzart.setKategorija(categorySport);
-        
-        Path pathMozzartSport = Paths.get("C:/Users/jevremovv/Desktop/bookmark/src/main/resources/static/img/ms.jpg");
+
+        File file2 = ResourceUtils.getFile("classpath:static/img/ms.jpg");
+
+        Path pathMozzartSport = Paths.get(file2.getAbsoluteFile().toString());
         try {
             bookmarkMozzart.setImage(Files.readAllBytes(pathMozzartSport));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+        bookmarkList.add(bookmarkMozzart);
+
         Bookmark bookmarkBBC = new Bookmark("http://www.bbc.co.uk/news", "BBC News", "The best of the BBC, with the latest news and sport headlines, weather, TV & radio highlights and much more from across the whole of BBC Online");
         bookmarkBBC.setKorisnik(appUserIlija);
         bookmarkBBC.setKategorija(categoryNews);
-        
+        bookmarkList.add(bookmarkBBC);
+
         Bookmark bookmarkCNN = new Bookmark("https://edition.cnn.com/", "CNN", "View the latest news and breaking news today for U.S., world, weather, entertainment, politics and health at CNN.com.");
         bookmarkCNN.setKategorija(categoryNews);
         bookmarkCNN.setKorisnik(appUserIlija);
-        
+        bookmarkList.add(bookmarkCNN);
+
         Bookmark bookmarkNYT = new Bookmark("https://www.nytimes.com/", "New York Times", "The New York Times: Find breaking news, multimedia, reviews & opinion on Washington, business, sports, movies, travel, books, jobs, education, real estate");
         bookmarkNYT.setKorisnik(appUserIlija);
         bookmarkNYT.setKategorija(categoryNews);
-        
+        bookmarkList.add(bookmarkNYT);
+
         Bookmark adultContentBookmark = new Bookmark("http://www.telegraf.rs/","adultContentBookmark","adultContent description");
         adultContentBookmark.setKorisnik(appUserStojdza);
         adultContentBookmark.setKategorija(adultContent);
 
 
-        bookmarkList.add(bookmarkLiveScore);
-        bookmarkList.add(bookmarkSportBible);
-        bookmarkList.add(bookmarkMozzart);
-        bookmarkList.add(bookmarkBBC);
-        bookmarkList.add(bookmarkCNN);
-        bookmarkList.add(bookmarkNYT);
         bookmarkList.add(adultContentBookmark);
 
         bookmarkRepository.saveAll(bookmarkList);
